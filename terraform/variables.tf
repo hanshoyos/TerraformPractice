@@ -37,7 +37,7 @@ variable "vm_target_node" {
 variable "vm_pool" {
   description = "Proxmox resource pool"
   type        = string
-  default     = "pool0"
+  default     = "Domain Controllers"
 }
 
 variable "vm_template" {
@@ -61,5 +61,5 @@ variable "vm_memory" {
 variable "vm_disk_size" {
   description = "Disk size for the VM"
   type        = string
-  default     = "50G"
+  default     = "100G"
 }
