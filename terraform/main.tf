@@ -47,7 +47,3 @@ resource "proxmox_vm_qemu" "example_vm" {
   # Custom cloud-init configuration
   ciuser_data = file("cloud-init.yaml")
 }
-
-output "vm_id" {
-  value = proxmox_vm_qemu.example_vm.id
-}
