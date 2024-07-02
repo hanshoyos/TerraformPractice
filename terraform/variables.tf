@@ -44,6 +44,12 @@ variable "vm_template" {
   description = "VM template to clone from"
   type        = string
   default     = "WinServer2019-cloudinit"
+
+}
+variable "vm_storage" {
+  description = "VM storage"
+  type        = string
+  default     = "local-zfs"
 }
 
 variable "vm_cores" {
