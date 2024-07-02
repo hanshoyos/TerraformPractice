@@ -27,7 +27,7 @@ resource "proxmox_vm_qemu" "example_vm" {
   os_type     = "cloud-init"
   cpu         = "kvm64"
   memory      = var.vm_memory
-}
+
 # Setup the disk
     disks {
         ide {
@@ -62,3 +62,4 @@ resource "proxmox_vm_qemu" "example_vm" {
   boot = "order=virtio0"
   # Keep in mind to use the CIDR notation for the ip.
   ipconfig0 = "ip=192.168.10.100/24,gw=192.168.10.1"
+}
