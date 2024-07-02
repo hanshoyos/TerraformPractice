@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
-      version = ">=2.9.0"
+      version = "3.0.1-rc3"
     }
   }
 }
@@ -14,7 +14,7 @@ provider "proxmox" {
   pm_tls_insecure     = var.pm_tls_insecure
 }
 
-resource "proxmox_vm_qemu" "example_vm" {
+resource "proxmox_vm_qemu" "dc_vm" {
   name        = var.vm_name
   desc        = "A test for using terraform and cloudinit"
   target_node = var.vm_target_node
@@ -43,7 +43,6 @@ resource "proxmox_vm_qemu" "example_vm" {
                     size            = var.vm_disk_size
                     cache           = "writeback"
                     storage         = var.vm_storage
-                    storage_type    = "rbd"
                     iothread        = true
                     discard         = true
                 }
@@ -54,8 +53,6 @@ resource "proxmox_vm_qemu" "example_vm" {
   network {
     model  = "virtio"
     bridge = "vmbr0"
-    # Static IP configuration
-    ip = "192.168.10.100/24"
   }
 
   # Setup the ip address using cloud-init.
