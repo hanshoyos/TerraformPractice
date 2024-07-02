@@ -51,7 +51,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
     bridge = "vmbr0"
   }
 
-  ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
+  ipconfig0  = "ip="dhcp" #192.168.10.100/24,gw=192.168.10.1"
 }
 
 ##################### OUTPUT BLOCK #####################
