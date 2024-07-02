@@ -40,10 +40,10 @@ resource "proxmox_vm_qemu" "dc_vm" {
       virtio0 {
         disk {
           size    = var.vm_disk_size
-          cache   = "writeback"
+          cache   = "no cache"
           storage = var.vm_storage
           iothread= true
-          discard = true
+          discard = false
         }
       }
     }
