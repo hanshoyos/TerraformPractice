@@ -42,7 +42,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
           size    = var.vm_disk_size
       #    cache   = "no cache"
           storage = var.vm_storage
-          iothread= true
+        #  iothread= true
        #   discard = false
         }
       }
