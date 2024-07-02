@@ -37,7 +37,7 @@ variable "vm_target_node" {
 variable "vm_pool" {
   description = "Proxmox resource pool"
   type        = string
-  default     = "Domain Controllers"
+  default     = "Domain_Controllers"
 }
 
 variable "vm_template" {
