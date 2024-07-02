@@ -1,0 +1,12 @@
+ansible_connection: ssh
+dns_forwarders: 1.1.1.1
+
+domain_short: RED
+domain_name: '{{ domain_short|lower }}lab.local'
+
+domain_admin_login: '{{ domain_short }}\Administrator'
+domain_admin_ssh: '{{ domain_short }}\\Administrator'
+domain_admin_password: DomainAdminPassword.
+safe_mode_pass: SafeModePassword.
+
+ca_name: '{{ domain_short }}-CA'
