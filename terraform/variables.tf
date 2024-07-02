@@ -28,12 +28,6 @@ variable "vm_name" {
   default     = "DC01"
 }
 
-variable "vm_description" {
-  description = "Description of the VM"
-  type        = string
-  default     = "Domain Controller"
-}
-
 variable "vm_target_node" {
   description = "Proxmox target node"
   type        = string
