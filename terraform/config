@@ -1,0 +1,14 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = "<version tag>"
+    }
+  }
+}
+
+provider "proxmox" {
+  pm_api_url = "https://192.168.10.20:8006/api2/json"
+  pm_api_token_id = "root@pam!Hashicorp"
+  pm_api_token_secret = "7c3929a7-7dca-474e-a41f-de89ec3f5950"
+}
