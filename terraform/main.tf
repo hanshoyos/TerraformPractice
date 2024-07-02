@@ -36,8 +36,8 @@ resource "proxmox_vm_qemu" "dc_vm" {
         }
       }
     }
-    virtio {
-      virtio0 {
+    sata {
+      sata0 {
         disk {
           size    = var.vm_disk_size
           cache   = "no cache"
