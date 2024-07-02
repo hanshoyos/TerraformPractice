@@ -16,23 +16,40 @@ provider "proxmox" {
 
 resource "proxmox_vm_qemu" "example_vm" {
   name        = var.vm_name
+  desc        = "A test for using terraform and cloudini
   target_node = var.vm_target_node
   pool        = var.vm_pool
   clone       = var.vm_template
   cores       = var.vm_cores
+  agent       = 1
+  sockets     = 1
+  vcpus       = 0
+  os_type     = "cloud-init"
+  cpu         = "kvm64"
   memory      = var.vm_memory
 
-  disks {
+# Setup the disk
+    disks {
+        ide {
+            ide3 {
+                cloudinit {
+                    storage = "local-zfs"
+                }
+            }
+        }
         virtio {
             virtio0 {
                 disk {
-                    size    = var.vm_disk_size
-                    iothread= "virtio"
-                    storage = var.vm_storage
+                    size            = var.vm_disk_size
+                    cache           = "writeback"
+                    storage         = var.vm_storage
+                    storage_type    = "rbd"
+                    iothread        = true
+                    discard         = true
                 }
-              }
             }
-          }
+        }
+    }
 
   network {
     model  = "virtio"
@@ -41,9 +58,8 @@ resource "proxmox_vm_qemu" "example_vm" {
     ip = "192.168.10.100/24"
   }
 
+  # Setup the ip address using cloud-init.
+  boot = "order=virtio0"
+  # Keep in mind to use the CIDR notation for the ip.
   ipconfig0 = "ip=192.168.10.100/24,gw=192.168.10.1"
-
-  cicustom = "user=local:snippets/cloud-init.yaml"
-  # Custom cloud-init configuration
-  ciuser_data = file("cloud-init.yaml")
 }
