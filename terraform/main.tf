@@ -49,9 +49,8 @@ resource "proxmox_vm_qemu" "dc_vm" {
   network {
     model  = "virtio"
     bridge = "vmbr0"
+    ip     = "dhcp"
   }
-
-  ipconfig0  = "ip="dhcp" #192.168.10.100/24,gw=192.168.10.1"
 }
 
 ##################### OUTPUT BLOCK #####################
