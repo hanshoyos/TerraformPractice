@@ -59,7 +59,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
   cpu         = "kvm64"
   memory      = var.vm_memory
 
-  disk {
+  disks {
     size    = var.vm_disk_size
     type    = "scsi"
     storage = var.vm_storage
@@ -73,7 +73,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
   boot       = "order=virtio0"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
 
-  disk {
+  disks {
     id           = 0
     type         = "scsi"
     storage      = local.iso_storage_pool
