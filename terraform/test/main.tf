@@ -73,6 +73,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
   boot       = "order=virtio0"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
 
+  // Define a disk block with media type cdrom which references the generated cloud-init disk
   disks {
     scsi {
       scsi0 {
