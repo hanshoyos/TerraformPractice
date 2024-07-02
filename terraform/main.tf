@@ -54,6 +54,6 @@ resource "proxmox_vm_qemu" "dc_vm" {
     bridge = "vmbr0"
   }
 
-  boot       = "order=virtio0"
+  boot       = "order=ide3"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
 }
