@@ -62,7 +62,7 @@ output "ansible_inventory" {
 #      "monitoring" = proxmox_virtual_environment_vm.vm["monitoring"].ipv4_addresses[1][0]
 #    },
     windows_ips = {
-      "DC"  = proxmox_virtual_environment_vm.vm["DC"].ipv4_addresses[0][0]
+      "DCtest"  = proxmox_virtual_environment_vm.vm["DCtest"].ipv4_addresses[0][0]
       #"FS"  = proxmox_virtual_environment_vm.vm["FS"].ipv4_addresses[0][0]
       #"ADCS" = proxmox_virtual_environment_vm.vm["ADCS"].ipv4_addresses[0][0]
       #"WEB" = proxmox_virtual_environment_vm.vm["WEB"].ipv4_addresses[0][0]
