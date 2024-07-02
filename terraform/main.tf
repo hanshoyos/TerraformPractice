@@ -40,10 +40,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
       sata0 {
         disk {
           size    = var.vm_disk_size
-      #    cache   = "no cache"
           storage = var.vm_storage
-        #  iothread= true
-       #   discard = false
         }
       }
     }
@@ -54,6 +51,24 @@ resource "proxmox_vm_qemu" "dc_vm" {
     bridge = "vmbr0"
   }
 
- # boot       = "order=virtio0"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
 }
+
+##################### OUTPUT BLOCK #####################
+
+output "ansible_inventory" {
+  value = templatefile("${path.module}/inventory_hosts.tmpl", {
+#    ubuntu_ips = {
+#      "monitoring" = proxmox_virtual_environment_vm.vm["monitoring"].ipv4_addresses[1][0]
+#    },
+    windows_ips = {
+      "DC"  = proxmox_virtual_environment_vm.vm["DC"].ipv4_addresses[0][0]
+      #"FS"  = proxmox_virtual_environment_vm.vm["FS"].ipv4_addresses[0][0]
+      #"ADCS" = proxmox_virtual_environment_vm.vm["ADCS"].ipv4_addresses[0][0]
+      #"WEB" = proxmox_virtual_environment_vm.vm["WEB"].ipv4_addresses[0][0]
+      #"WS1" = proxmox_virtual_environment_vm.vm["WS1"].ipv4_addresses[0][0]
+      #"WS2" = proxmox_virtual_environment_vm.vm["WS2"].ipv4_addresses[0][0]
+    }
+  })
+}
+
