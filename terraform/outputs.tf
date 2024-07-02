@@ -10,5 +10,5 @@ output "vm_name" {
 
 output "vm_ip" {
   description = "IP address of the VM"
-  value       = proxmox_vm_qemu.dc.ipconfig0
+  value       = var.vm_ip
 }
