@@ -25,7 +25,7 @@ variable "pm_tls_insecure" {
 variable "vm_name" {
   description = "Name of the VM"
   type        = string
-  default     = "DC01"
+  default     = "DCtest"
 }
 
 variable "vm_target_node" {
