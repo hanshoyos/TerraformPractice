@@ -32,7 +32,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
     ide {
       ide3 {
         cloudinit {
-          storage = "local"
+          storage = "local-zfs"
         }
       }
     }
