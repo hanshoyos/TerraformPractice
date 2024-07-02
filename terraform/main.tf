@@ -28,7 +28,7 @@ resource "proxmox_vm_qemu" "example_vm" {
                 disk {
                     size    = var.vm_disk_size
                     iothread= "virtio"
-                    storage = var.vm_disk_size
+                    storage = var.vm_storage
                 }
               }
             }
