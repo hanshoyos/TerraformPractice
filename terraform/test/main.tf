@@ -59,25 +59,10 @@ resource "proxmox_vm_qemu" "dc_vm" {
   cpu         = "kvm64"
   memory      = var.vm_memory
 
-  disks {
-    scsi {
-      scsi0 {
-        cdrom {
-          iso = "${local.iso_storage_pool}:${proxmox_cloud_init_disk.ci.id}"
-        }
-      }
-    }
-    virtio {
-      virtio0 {
-        disk {
-          size    = var.vm_disk_size
-          cache   = "writeback"
-          storage = var.vm_storage
-          iothread= true
-          discard = true
-        }
-      }
-    }
+  disk {
+    size    = var.vm_disk_size
+    type    = "scsi"
+    storage = var.vm_storage
   }
 
   network {
@@ -87,6 +72,18 @@ resource "proxmox_vm_qemu" "dc_vm" {
 
   boot       = "order=virtio0"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
+
+  // Define a disk block with media type cdrom which references the generated cloud-init disk
+  disks {
+    scsi {
+      scsi0 {
+        cd {
+          iso = "${local.iso_storage_pool}:${proxmox_cloud_init_disk.ci.id}"
+        }
+      }
+    }
+  }
+}
 
 output "vm_id" {
   description = "The ID of the created VM"
