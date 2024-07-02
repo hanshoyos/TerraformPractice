@@ -8,42 +8,31 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url         = "https://192.168.10.20:8006/api2/json"
-  pm_api_token_id    = "root@pam!Hashicorp"
-  pm_api_token_secret = "7c3929a7-7dca-474e-a41f-de89ec3f5950"
-  pm_tls_insecure    = true
+  pm_api_url          = var.pm_api_url
+  pm_api_token_id     = var.pm_api_token_id
+  pm_api_token_secret = var.pm_api_token_secret
+  pm_tls_insecure     = var.pm_tls_insecure
 }
 
 resource "proxmox_vm_qemu" "dc" {
-  name        = "DC01"
-  desc        = "Domain Controller"
-  target_node = "pve"
-  pool        = "pool0"
-  clone       = "WinServer2019-cloudinit"
-  cores       = 4
-  sockets     = 1
-  memory      = 8192
-  scsihw      = "virtio-scsi-pci"
+  name        = var.vm_name
+  desc        = var.vm_description
+  target_node = var.vm_target_node
+  pool        = var.vm_pool
+  clone       = var.vm_template
+  cores       = var.vm_cores
+  sockets     = var.vm_sockets
+  memory      = var.vm_memory
+  scsihw      = var.vm_scsi_hw
 
-  disks {
-    ide {
-      ide3 {
-        cloudinit {
-          storage = "local-zfs"
-        }
-      }
-    }
-    virtio {
-      virtio0 {
-        disk {
-          size            = 60
-          cache           = "writeback"
-          storage         = "local-zfs"
-          iothread        = true
-          discard         = true
-        }
-      }
-    }
+  disk {
+    id           = 0
+    size         = "${var.vm_disk_size}G"
+    storage      = var.vm_disk_storage
+    type         = "virtio"
+    cache        = "writeback"
+    iothread     = true
+    discard      = true
   }
 
   network {
@@ -51,5 +40,9 @@ resource "proxmox_vm_qemu" "dc" {
     bridge = "vmbr0"
   }
 
-  ipconfig0 = "ip=192.168.10.100/24,gw=192.168.10.1"
+  ipconfig0 = "ip=${var.vm_ip},gw=${var.vm_gateway}"
+
+  sshkeys = <<EOF
+ssh-rsa 9182739187293817293817293871== user@pc
+EOF
 }
