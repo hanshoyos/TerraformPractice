@@ -22,11 +22,17 @@ resource "proxmox_vm_qemu" "example_vm" {
   cores       = var.vm_cores
   memory      = var.vm_memory
 
-  disk {
-    size    = var.vm_disk_size
-    type    = "scsi"
-    storage = "local-lvm"
-  }
+  disks {
+        virtio {
+            virtio0 {
+                disk {
+                    size    = var.vm_disk_size
+                    iothread= "virtio"
+                    storage = var.vm_disk_size
+                }
+              }
+            }
+          }
 
   network {
     model  = "virtio"
