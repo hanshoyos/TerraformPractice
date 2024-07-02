@@ -27,6 +27,8 @@ resource "proxmox_vm_qemu" "dc_vm" {
   os_type     = "cloud-init"
   cpu         = "kvm64"
   memory      = var.vm_memory
+  ciuser      = "hhoyos"
+  cipassword  = "P@ssw0rd"
 
   disks {
     ide {
@@ -49,25 +51,5 @@ resource "proxmox_vm_qemu" "dc_vm" {
   network {
     model  = "virtio"
     bridge = "vmbr0"
-    ip     = "dhcp"
   }
 }
-
-##################### OUTPUT BLOCK #####################
-
-output "ansible_inventory" {
-  value = templatefile("${path.module}/inventory_hosts.tmpl", {
-#    ubuntu_ips = {
-#      "monitoring" = proxmox_virtual_environment_vm.vm["monitoring"].ipv4_addresses[1][0]
-#    },
-    windows_ips = {
-      "DCtest"  = proxmox_virtual_environment_vm.vm["DCtest"].ipv4_addresses[0][0]
-      #"FS"  = proxmox_virtual_environment_vm.vm["FS"].ipv4_addresses[0][0]
-      #"ADCS" = proxmox_virtual_environment_vm.vm["ADCS"].ipv4_addresses[0][0]
-      #"WEB" = proxmox_virtual_environment_vm.vm["WEB"].ipv4_addresses[0][0]
-      #"WS1" = proxmox_virtual_environment_vm.vm["WS1"].ipv4_addresses[0][0]
-      #"WS2" = proxmox_virtual_environment_vm.vm["WS2"].ipv4_addresses[0][0]
-    }
-  })
-}
-
