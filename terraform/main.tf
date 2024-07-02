@@ -28,15 +28,10 @@ resource "proxmox_vm_qemu" "example_vm" {
   network {
     model  = "virtio"
     bridge = "vmbr0"
-    # Static IP configuration
     ipconfig0 = "ip=192.168.10.100/24,gw=192.168.10.1"
   }
   cicustom = "user=local:snippets/cloud-init.yaml"
   cloudinit {
     user_data = file("cloud-init.yaml")
   }
-}
-
-output "vm_id" {
-  value = proxmox_vm_qemu.example_vm.id
 }
