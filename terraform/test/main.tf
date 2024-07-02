@@ -59,7 +59,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
   cpu         = "kvm64"
   memory      = var.vm_memory
 
-  disk {
+  disks {
     size    = var.vm_disk_size
     type    = "scsi"
     storage = var.vm_storage
@@ -77,7 +77,7 @@ resource "proxmox_vm_qemu" "dc_vm" {
   disks {
     scsi {
       scsi0 {
-        cd {
+        cdrom {
           iso = "${local.iso_storage_pool}:${proxmox_cloud_init_disk.ci.id}"
         }
       }
