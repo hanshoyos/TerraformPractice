@@ -16,7 +16,7 @@ provider "proxmox" {
 
 resource "proxmox_vm_qemu" "example_vm" {
   name        = var.vm_name
-  desc        = "A test for using terraform and cloudini
+  desc        = "A test for using terraform and cloudinit"
   target_node = var.vm_target_node
   pool        = var.vm_pool
   clone       = var.vm_template
