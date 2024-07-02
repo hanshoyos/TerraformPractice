@@ -14,6 +14,37 @@ provider "proxmox" {
   pm_tls_insecure     = var.pm_tls_insecure
 }
 
+locals {
+  iso_storage_pool = var.vm_storage
+}
+
+resource "proxmox_cloud_init_disk" "ci" {
+  name      = var.vm_name
+  pve_node  = var.vm_target_node
+  storage   = local.iso_storage_pool
+
+  meta_data = yamlencode({
+    instance_id    = sha1(var.vm_name)
+    local-hostname = var.vm_name
+  })
+
+  user_data = file("${path.module}/cloud-init.yaml")
+
+  network_config = yamlencode({
+    version = 1
+    config = [{
+      type = "physical"
+      name = "eth0"
+      subnets = [{
+        type            = "static"
+        address         = "192.168.10.100/24"
+        gateway         = "192.168.10.1"
+        dns_nameservers = ["8.8.8.8", "8.8.4.4"]
+      }]
+    }]
+  })
+}
+
 resource "proxmox_vm_qemu" "dc_vm" {
   name        = var.vm_name
   desc        = "A test for using Terraform and cloud-init"
@@ -42,8 +73,14 @@ resource "proxmox_vm_qemu" "dc_vm" {
   boot       = "order=virtio0"
   ipconfig0  = "ip=192.168.10.100/24,gw=192.168.10.1"
 
-  cicustom = {
-    user = "local:snippets/cloud-init.yaml"
+  disks {
+    scsi {
+      scsi0 {
+        cd {
+          iso = "${local.iso_storage_pool}:${proxmox_cloud_init_disk.ci.id}"
+        }
+      }
+    }
   }
 }
 
