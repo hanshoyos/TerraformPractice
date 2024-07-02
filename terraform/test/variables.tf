@@ -37,15 +37,15 @@ variable "vm_target_node" {
 variable "vm_pool" {
   description = "Proxmox resource pool"
   type        = string
-  default     = "Domain Controllers"
+  default     = "Domain_Controllers"
 }
 
 variable "vm_template" {
   description = "VM template to clone from"
   type        = string
   default     = "WinServer2019-cloudinit"
-
 }
+
 variable "vm_storage" {
   description = "VM storage"
   type        = string
@@ -68,14 +68,4 @@ variable "vm_disk_size" {
   description = "Disk size for the VM"
   type        = string
   default     = "100G"
-}
-
-variable "win_password" {
-    description = "windows password defined in packer template"
-    default = "ProvisionPassword."
-}
-
-variable "win_user" {
-    description = "deafult windows localadmin"
-    default = "administrator"
 }
