@@ -26,21 +26,21 @@ resource "proxmox_vm_qemu" "dc" {
   scsihw      = var.vm_scsi_hw
 
   disk {
-    id           = 0
-    size         = "${var.vm_disk_size}G"
-    storage      = var.vm_disk_storage
-    type         = "virtio"
-    cache        = "writeback"
-    iothread     = true
-    discard      = true
+    size      = "${var.vm_disk_size}G"
+    storage   = var.vm_disk_storage
+    type      = "virtio"
+    cache     = "writeback"
+    iothread  = true
+    discard   = true
   }
 
   network {
-    model  = "virtio"
-    bridge = "vmbr0"
+    model   = "virtio"
+    bridge  = "vmbr0"
+    tag     = 256
   }
 
-  ipconfig0 = "ip=${var.vm_ip},gw=${var.vm_gateway}"
+  ipconfig0 = var.vm_ip
 
   sshkeys = <<EOF
 ssh-rsa 9182739187293817293817293871== user@pc
