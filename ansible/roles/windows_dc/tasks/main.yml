@@ -1,0 +1,24 @@
+- name: Wait for WinRM to be available
+  win_wait_for:
+    port: 5986
+    host: "{{ ansible_host }}"
+    timeout: 300
+
+- name: Ensure the latest PowerShellGet
+  win_shell: "Install-Module -Name PowerShellGet -Force -SkipPublisherCheck"
+  args:
+    executable: powershell.exe
+
+- name: Install AD-Domain-Services
+  win_feature:
+    name: AD-Domain-Services
+    include_management_tools: yes
+
+- name: Promote to Domain Controller
+  win_shell: >
+    Install-ADDSForest `
+    -DomainName "example.local" `
+    -SafeModeAdministratorPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force) `
+    -InstallDns
+  args:
+    executable: powershell.exe
