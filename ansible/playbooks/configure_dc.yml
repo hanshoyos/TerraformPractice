@@ -1,5 +1,5 @@
-- name: Configure Domain Controller
-  hosts: windows_vm
-  gather_facts: false
+---
+- name: Configure Windows Server 2019 as a Domain Controller
+  hosts: windows
   roles:
     - windows_dc
