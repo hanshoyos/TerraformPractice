@@ -1,0 +1,26 @@
+---
+- name: Configure Windows Server as Domain Controller
+  hosts: windows
+  tasks:
+    - name: Ensure Windows feature 'AD-Domain-Services' is installed
+      win_feature:
+        name: AD-Domain-Services
+        state: present
+
+    - name: Include management tools
+      win_feature:
+        name: RSAT-AD-Tools-Feature
+        state: present
+
+    - name: Promote to Domain Controller
+      win_shell: |
+        Install-ADDSForest `
+          -DomainName "example.local" `
+          -SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText "YourPassword" -Force) `
+          -InstallDNS `
+          -ForceReboot
+      register: dc_promotion
+
+    - name: Reboot after promotion
+      win_reboot:
+      when: dc_promotion.changed
