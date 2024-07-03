@@ -1,18 +1,30 @@
-- name: Ensure the latest PowerShellGet
-  win_shell: "Install-Module -Name PowerShellGet -Force -SkipPublisherCheck"
-  args:
-    executable: powershell.exe
+---
+- name: Ensure necessary Windows features are installed
+  ansible.windows.win_feature:
+    name: 
+      - AD-Domain-Services
+      - DNS
+      - RSAT-AD-AdminCenter
+    state: present
 
-- name: Install AD-Domain-Services
-  win_feature:
-    name: AD-Domain-Services
-    include_management_tools: yes
-
-- name: Promote to Domain Controller
-  win_shell: >
+- name: Promote server to Domain Controller
+  ansible.windows.win_shell: |
     Install-ADDSForest `
-    -DomainName "example.local" `
-    -SafeModeAdministratorPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force) `
-    -InstallDns
-  args:
-    executable: powershell.exe
+      -DomainName "example.com" `
+      -InstallDNS `
+      -CreateDnsDelegation:$false `
+      -DatabasePath "C:\Windows\NTDS" `
+      -DomainMode "WinThreshold" `
+      -DomainNetbiosName "EXAMPLE" `
+      -ForestMode "WinThreshold" `
+      -InstallDns `
+      -LogPath "C:\Windows\NTDS" `
+      -NoRebootOnCompletion:$true `
+      -SysvolPath "C:\Windows\SYSVOL" `
+      -Force:$true `
+      -SafeModeAdministratorPassword (ConvertTo-SecureString "P@ssw0rd" -AsPlainText -Force)
+
+- name: Reboot after promotion
+  ansible.windows.win_reboot:
+    msg: "Rebooting after Domain Controller promotion"
+    timeout: 30
