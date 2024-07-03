@@ -4,7 +4,7 @@
   tasks:
     - name: Rename server
       win_hostname:
-        name: "{{ inventory_hostname }}"
+        name: "DC-Server"
       register: rename
       
     - name: Reboot after rename
@@ -24,13 +24,13 @@
     - name: Change Administrator password
       win_user:
         name: Administrator
-        password: "{{ domain_admin_password }}"
+        password: "P@ssw0rd"
 
     - name: Create domain
       microsoft.ad.domain:
-        dns_domain_name: "{{ domain_name }}"
-        domain_netbios_name: "{{ domain_short }}"
-        safe_mode_password: "{{ safe_mode_pass }}"
+        dns_domain_name: "VetTech.com"
+        domain_netbios_name: "VetTech"
+        safe_mode_password: "P@ssw0rd"
         reboot: true
 
     - name: Set internal DNS server 
@@ -38,11 +38,6 @@
         adapter_names: '*'
         ipv4_addresses:
         - '127.0.0.1'
-
-    - name: Configure DNS forwarders
-      ansible.windows.win_powershell:
-        script: |
-          Set-DNSServerForwarder -IPAddress {{ dns_forwarders }}
 
     - name: Allow RDP to specific users
       ansible.windows.win_user_right:
@@ -52,47 +47,14 @@
 
     - name: Misconfiguration - Add jacktest account (ws2 account)
       microsoft.ad.user:
-        name: '{{ first_user }}'
-        firstname: Test
-        surname: Thandelete
-        password: '{{ first_user_password }}'
+        name: 'Hans S. Hoyos'
+        firstname: Hans
+        surname: Hoyos
+        password: 'P@ssw0rd'
         state: present
-        domain_username: Administrator
-        domain_password: '{{ domain_admin_password }}'
+        domain_username: hhoyos
+        domain_password: 'P@ssw0rd'
         groups:
           set:
           - Domain Users
           - Remote Desktop Users
-
-    - name: Misconfiguration - Add webadmin account (web admin account)
-      microsoft.ad.user:
-        name: '{{ web_admin }}'
-        firstname: WebServer
-        surname: Administrator
-        password: '{{ web_admin_password }}'
-        state: present
-        domain_username: Administrator
-        domain_password: '{{ domain_admin_password }}'
-        groups:
-          set:
-          - Domain Users
-          - Remote Desktop Users
-
-    - name: Misconfiguration - Add jeffadmin account (fs admin account)
-      microsoft.ad.user:
-        name: '{{ server_admin }}'
-        firstname: FileSystem
-        surname: Administrator
-        password: '{{ server_admin_password }}'
-        state: present
-        domain_username: Administrator
-        domain_password: '{{ domain_admin_password }}'
-        groups:
-          set:
-          - Domain Users
-          - Remote Desktop Users
-
-    - name: Set autologon for specific user
-      community.windows.win_auto_logon:
-        username: '{{ domain_admin_login }}'
-        password: '{{ domain_admin_password }}'
