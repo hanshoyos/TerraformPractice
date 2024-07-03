@@ -1,0 +1,12 @@
+proxmox_host: "192.168.10.20"
+proxmox_user: "root@pam"
+proxmox_password: "P@ssw0rd"
+proxmox_node: "pve"
+template_vm_id: "100"
+
+ansible_host: "192.168.10.23"
+ansible_user: "Administrator"
+ansible_password: "P@ssw0rd"
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: ntlm
