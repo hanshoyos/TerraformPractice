@@ -21,14 +21,14 @@ resource "proxmox_vm_qemu" "dc_vm" {
   pool        = var.vm_pool
   clone       = var.vm_template
   cores       = var.vm_cores
-  agent       = 0
+  agent       = 1
   sockets     = 1
   vcpus       = 0
   os_type     = "cloud-init"
   cpu         = "kvm64"
   memory      = var.vm_memory
-  ciuser      = "hhoyos"
-  cipassword  = "P@ssw0rd"
+ # ciuser      = "hhoyos"
+ # cipassword  = "P@ssw0rd"
 
   disks {
     ide {
