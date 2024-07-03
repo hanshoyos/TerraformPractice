@@ -1,4 +1,4 @@
-ansible_connection: ssh
+ansible_connection: winrm
 dns_forwarders: 1.1.1.1
 
 domain_short: RED
