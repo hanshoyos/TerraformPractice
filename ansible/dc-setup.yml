@@ -2,6 +2,7 @@
   hosts: windows
   gather_facts: no
   tasks:
+  
     - name: Rename server
       win_hostname:
         name: "DC-Server"
